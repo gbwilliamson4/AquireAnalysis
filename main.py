@@ -4,6 +4,9 @@ from American import American
 
 st.title("George's Aquire Test")
 player_list = []
+P1 = Players()
+
+
 American = American()
 
 # Create and add players to list.
