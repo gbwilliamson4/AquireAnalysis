@@ -19,3 +19,6 @@ class Players:
         # Tier 3 holdings
         self.imperial_holdings = 0
         self.continental_holdings = 0
+
+    def list_holding(self):
+        pass

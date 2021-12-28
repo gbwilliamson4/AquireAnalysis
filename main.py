@@ -3,7 +3,10 @@ from Players import Players
 from Tier1 import Tower, Luxor
 from Tier2 import American, Worldwide, Festival
 from Tier3 import Imperial, Continental
+import pandas as pd
+import matplotlib.pyplot as plt
 
+st.set_page_config(layout="wide")
 # Setup back end objects
 player_list = []
 P1 = Players("P1", 1)
@@ -29,6 +32,7 @@ Festival = Festival()
 Imperial = Imperial()
 Continental = Continental()
 
+
 def update_companies():
     # Tier 1
     Tower.value_update()
@@ -42,8 +46,6 @@ def update_companies():
     # Tier 3
     Imperial.value_update()
     Continental.value_update()
-
-
 
 
 # -------- Start web design here --------
@@ -62,7 +64,6 @@ with col1:
 with col2:
     Luxor.squares = st.number_input("Current Luxor Squares", 0, 100, key=12)
 
-
 st.subheader("Tier 2 Companies")
 col1, col2, col3 = st.columns((1, 1, 1))
 with col1:
@@ -71,7 +72,6 @@ with col2:
     Worldwide.squares = st.number_input("Current Worldwide Squares", 0, 100, key=22)
 with col3:
     Festival.squares = st.number_input("Current Festival Squares", 0, 100, key=23)
-
 
 st.subheader("Tier 3 Companies")
 col1, col2 = st.columns((1, 1))
@@ -83,7 +83,9 @@ with col2:
 
 st.subheader("Player Info Tracking")
 col1, col2, col3, col4 = st.columns((1, 1, 1, 1))
+
 update_companies()
+
 with col1:
     P1.player_name = st.text_input(P1.player_name, key=P1.key)
 
@@ -112,7 +114,6 @@ with col2:
 
     P2.imperial_holdings = st.number_input(f"Imperial Shares", 0, 10, key=226)
     P2.continental_holdings = st.number_input(f"Continental Shares", 0, 10, key=227)
-
 
 with col3:
     P3.player_name = st.text_input(P3.player_name, key=P3.key)
@@ -145,7 +146,7 @@ st.header("Analysis")
 col1, col2, col3, col4 = st.columns((1, 1, 1, 1))
 with col1:
     st.write("this is the first column")
-    st.write(P1.american_holdings * American.vps)
+
 with col2:
     st.write("this is the second column")
 
@@ -154,7 +155,6 @@ with col3:
 
 with col4:
     st.write("this is the fourth column")
-
 
 # if st.button('stuff'):
 #     st.write("The button has been pressed")
@@ -166,3 +166,59 @@ with col4:
 #         st.write(f"American is currently valued at {American.vps}")
 #         st.write(f"{player.player_name} currently has ${American.vps * player.american_holdings} worth of American.")
 
+# Trying to figure out the graph
+
+d = {'Index Title': ["Tower", "Luxor", "American", "Worldwide", "Festival", "Imperial", "Continental"]}
+
+P1_vps = []
+P1_vps.append(P1.tower_holdings * Tower.vps)
+P1_vps.append(P1.luxor_holdings * Luxor.vps)
+P1_vps.append(P1.american_holdings * American.vps)
+P1_vps.append(P1.worldwide_holdings * Worldwide.vps)
+P1_vps.append(P1.festival_holdings * Festival.vps)
+P1_vps.append(P1.imperial_holdings * Imperial.vps)
+P1_vps.append(P1.continental_holdings * Continental.vps)
+
+P2_vps = []
+P2_vps.append(P2.tower_holdings * Tower.vps)
+P2_vps.append(P2.luxor_holdings * Luxor.vps)
+P2_vps.append(P2.american_holdings * American.vps)
+P2_vps.append(P2.worldwide_holdings * Worldwide.vps)
+P2_vps.append(P2.festival_holdings * Festival.vps)
+P2_vps.append(P2.imperial_holdings * Imperial.vps)
+P2_vps.append(P2.continental_holdings * Continental.vps)
+
+P3_vps = []
+P3_vps.append(P3.tower_holdings * Tower.vps)
+P3_vps.append(P3.luxor_holdings * Luxor.vps)
+P3_vps.append(P3.american_holdings * American.vps)
+P3_vps.append(P3.worldwide_holdings * Worldwide.vps)
+P3_vps.append(P3.festival_holdings * Festival.vps)
+P3_vps.append(P3.imperial_holdings * Imperial.vps)
+P3_vps.append(P3.continental_holdings * Continental.vps)
+
+P4_vps = []
+P4_vps.append(P4.tower_holdings * Tower.vps)
+P4_vps.append(P4.luxor_holdings * Luxor.vps)
+P4_vps.append(P4.american_holdings * American.vps)
+P4_vps.append(P4.worldwide_holdings * Worldwide.vps)
+P4_vps.append(P4.festival_holdings * Festival.vps)
+P4_vps.append(P4.imperial_holdings * Imperial.vps)
+P4_vps.append(P4.continental_holdings * Continental.vps)
+
+col1, col2 = st.columns((1, 1))
+
+with col1:
+    df = pd.DataFrame({P1.player_name: P1_vps,
+                       P2.player_name: P2_vps,
+                       P3.player_name: P3_vps,
+                       P4.player_name: P4_vps},
+                      index=["Tower", "Luxor", "American", "Worldwide", "Festival", "Imperial", "Continental"])
+    total = df.sum()
+    total.name = 'Total'
+    df = df.append(total.transpose())
+    st.write(df)
+
+with col2:
+    pass
+    # Shareholder bonuses will go in this table

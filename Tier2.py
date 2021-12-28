@@ -2,6 +2,8 @@ class Tier2:
     def __init__(self):
         self.vps = 0
         self.squares = 0
+        self.majority_bonus = 0
+        self.minority_bonus = 0
 
     def value_update(self):
         if self.squares == 0:
